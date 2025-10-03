@@ -1,0 +1,5 @@
+/* BUILDPROBE–ULTRA-SAFE: no PostCSS; unblock CI */
+:root { --_probe: 1; }
+html, body { height:100%; }
+body { margin:0; background:#fff; color:#111; }
+/* EOF */

@@ -1,0 +1,14 @@
+{
+  "changed": [
+    "globals.safe.css: /mnt/data/ai24-48_green_repo/app/globals.safe.css",
+    "layout.tsx: switched to globals.safe.css",
+    "lux-composite.css: /mnt/data/ai24-48_green_repo/styles/preview/lux-composite.css",
+    "lux-pages.css: /mnt/data/ai24-48_green_repo/styles/preview/lux-pages.css",
+    "postcss.config.mjs: /mnt/data/ai24-48_green_repo/postcss.config.mjs",
+    "added: /mnt/data/ai24-48_green_repo/public/icons/icon-192.png",
+    "added: /mnt/data/ai24-48_green_repo/public/icons/icon-512.png"
+  ],
+  "notes": [
+    "root=/mnt/data/ai24-48_green_repo"
+  ]
+}
