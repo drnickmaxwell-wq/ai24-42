@@ -1,10 +1,9 @@
+// components/ui/luxury-button.tsx
 'use client';
 
 import React from 'react';
 import { motion, type HTMLMotionProps } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { useBrandColors } from '@/components/providers/theme-provider';
-import { Slot } from '@radix-ui/react-slot';
 
 interface LuxuryButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
   children: React.ReactNode;
@@ -41,10 +40,11 @@ export function LuxuryButton({
   ripple = true,
   className,
   href,
-  asChild = false,
+  asChild,
   ...props
 }: LuxuryButtonProps) {
-  const colors = useBrandColors();
+  // Moved here so it's NOT inside JSX
+  const MotionComponent: any = href ? motion.a : motion.button;
 
   const baseClasses = cn(
     'relative overflow-hidden rounded-lg font-semibold transition-all duration-300 transform',
@@ -63,23 +63,14 @@ export function LuxuryButton({
 
   const buttonVariantsMotion = {
     initial: { scale: 1 },
-    hover: { 
+    hover: {
       scale: 1.05,
       y: -2,
       transition: { type: 'spring', stiffness: 300, damping: 20 }
     },
-    tap: { 
+    tap: {
       scale: 0.95,
       transition: { type: 'spring', stiffness: 300, damping: 20 }
-    }
-  };
-
-  const rippleVariants = {
-    initial: { scale: 0, opacity: 0.5 },
-    animate: { 
-      scale: 4, 
-      opacity: 0,
-      transition: { duration: 0.6, ease: 'easeOut' }
     }
   };
 
@@ -90,7 +81,7 @@ export function LuxuryButton({
       const size = Math.max(rect.width, rect.height);
       const x = e.clientX - rect.left - size / 2;
       const y = e.clientY - rect.top - size / 2;
-      
+
       const rippleElement = document.createElement('span');
       rippleElement.style.cssText = `
         position: absolute;
@@ -104,60 +95,34 @@ export function LuxuryButton({
         animation: ripple 0.6s ease-out;
         pointer-events: none;
       `;
-      
+
       button.appendChild(rippleElement);
-      
+
       setTimeout(() => {
         rippleElement.remove();
       }, 600);
     }
 
-    if (props.onClick) {
-      props.onClick(e);
-    }
+    if (props.onClick) props.onClick(e as any);
   };
 
-  const buttonContent = (
+  const content = (
     <>
-      {/* Shimmer Effect */}
       {shimmer && (
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent shimmer" />
       )}
-      
-      {/* Button Content */}
       <span className="relative z-10 flex items-center justify-center gap-2">
         {children}
       </span>
-      
-      {/* Coastal Wave Effect */}
       {variant === 'coastal' && (
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-wave" />
       )}
     </>
- 
-    const MotionComponent: any = href ? motion.a : motion.button;
+  );
 
-  if (asChild) {
+  if (href && !asChild) {
     return (
       <MotionComponent
-        className={baseClasses}
-        variants={buttonVariantsMotion}
-        initial="initial"
-        whileHover="hover"
-        whileTap="tap"
-        onClick={handleClick}
-        {...(href ? { href } : {})}
-        {...(props as any)}
-      >
-        <Slot>{buttonContent}</Slot>
-      </MotionComponent>
-    );
-  }
-);
-
-i(f (href) {
-    return (
-      <motion.a
         href={href}
         className={baseClasses}
         variants={buttonVariantsMotion}
@@ -166,13 +131,13 @@ i(f (href) {
         whileTap="tap"
         {...(props as any)}
       >
-        {buttonContent}
-      </motion.a>
+        {content}
+      </MotionComponent>
     );
   }
 
   return (
-    <motion.button
+    <MotionComponent
       className={baseClasses}
       variants={buttonVariantsMotion}
       initial="initial"
@@ -181,22 +146,18 @@ i(f (href) {
       onClick={handleClick}
       {...props}
     >
-      {buttonContent}
-    </motion.button>
+      {content}
+    </MotionComponent>
   );
 }
 
-// Add ripple animation to global CSS
+// ripple keyframes (global injection safeguard)
 if (typeof document !== 'undefined') {
   const style = document.createElement('style');
   style.textContent = `
     @keyframes ripple {
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
+      to { transform: scale(4); opacity: 0; }
     }
   `;
   document.head.appendChild(style);
 }
-
