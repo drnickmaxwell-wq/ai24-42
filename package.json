@@ -1,17 +1,18 @@
 {
   "name": "smh-web-bot",
   "version": "0.1.0",
-
-      "packageManager": "pnpm@9.12.0", 
-  "engines": { "node": ">=20.9 <21", "pnpm": ">=9" },
-
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20.9 <21",
+    "pnpm": ">=9"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack && next-sitemap",
     "start": "next start",
     "lint": "eslint",
-        "vercel-build": "pnpm install --frozen-lockfile && pnpm build"
+    "vercel-build": "pnpm install --frozen-lockfile && pnpm build"
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.24",
@@ -62,13 +63,13 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
+    "@types/node": "^20.19.13",
+    "@types/react": "^19.1.12",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.8",
-    "typescript": "^5"
+    "typescript": "^5.9.2"
   }
 }
